@@ -14,65 +14,70 @@ import AddPost from './pages/AddPost.jsx';
 import EditPost from './pages/EditPost.jsx';
 import Post from './pages/Post.jsx';
 
-// ✅ App-wide route configuration
-const router = createBrowserRouter([
+// App-wide route configuration with GitHub Pages support
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <App />, // Root layout with header, footer, and <Outlet />
+      children: [
+        { path: '/', element: <Home /> },
+
+        // Public routes
+        {
+          path: '/login',
+          element: (
+            <AuthLayout authentication={false}>
+              <Login />
+            </AuthLayout>
+          ),
+        },
+        {
+          path: '/signup',
+          element: (
+            <AuthLayout authentication={false}>
+              <Signup />
+            </AuthLayout>
+          ),
+        },
+
+        // Protected routes (require authentication)
+        {
+          path: '/all-posts',
+          element: (
+            <AuthLayout authentication>
+              <AllPosts />
+            </AuthLayout>
+          ),
+        },
+        {
+          path: '/add-post',
+          element: (
+            <AuthLayout authentication>
+              <AddPost />
+            </AuthLayout>
+          ),
+        },
+        {
+          path: '/edit-post/:slug',
+          element: (
+            <AuthLayout authentication>
+              <EditPost />
+            </AuthLayout>
+          ),
+        },
+
+        // Public route for viewing a single post
+        { path: '/post/:slug', element: <Post /> },
+      ],
+    },
+  ],
   {
-    path: '/',
-    element: <App />, // Root layout with header, footer, and <Outlet />
-    children: [
-      { path: '/', element: <Home /> },
+    basename: '/Blog', // This is the only new line — required for GitHub Pages
+  }
+);
 
-      // Public routes
-      {
-        path: '/login',
-        element: (
-          <AuthLayout authentication={false}>
-            <Login />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: '/signup',
-        element: (
-          <AuthLayout authentication={false}>
-            <Signup />
-          </AuthLayout>
-        ),
-      },
-
-      // Protected routes (require authentication)
-      {
-        path: '/all-posts',
-        element: (
-          <AuthLayout authentication>
-            <AllPosts />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: '/add-post',
-        element: (
-          <AuthLayout authentication>
-            <AddPost />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: '/edit-post/:slug',
-        element: (
-          <AuthLayout authentication>
-            <EditPost />
-          </AuthLayout>
-        ),
-      },
-
-      // Public route for viewing a single post
-      { path: '/post/:slug', element: <Post /> },
-    ],
-  },
-]);
-
-// ✅ Application entry point — Redux + Router integrated
+// Application entry point — Redux + Router integrated
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
