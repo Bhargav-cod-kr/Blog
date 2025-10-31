@@ -14,70 +14,30 @@ import AddPost from './pages/AddPost.jsx';
 import EditPost from './pages/EditPost.jsx';
 import Post from './pages/Post.jsx';
 
-// App-wide route configuration with GitHub Pages support
+// ✅ Corrected router for GitHub Pages
 const router = createBrowserRouter(
   [
     {
-      path: '/',
-      element: <App />, // Root layout with header, footer, and <Outlet />
+      path: '',
+      element: <App />,
       children: [
-        { path: '/', element: <Home /> },
+        { path: '', element: <Home /> },
 
-        // Public routes
-        {
-          path: '/login',
-          element: (
-            <AuthLayout authentication={false}>
-              <Login />
-            </AuthLayout>
-          ),
-        },
-        {
-          path: '/signup',
-          element: (
-            <AuthLayout authentication={false}>
-              <Signup />
-            </AuthLayout>
-          ),
-        },
+        { path: 'login', element: <AuthLayout authentication={false}><Login /></AuthLayout> },
+        { path: 'signup', element: <AuthLayout authentication={false}><Signup /></AuthLayout> },
 
-        // Protected routes (require authentication)
-        {
-          path: '/all-posts',
-          element: (
-            <AuthLayout authentication>
-              <AllPosts />
-            </AuthLayout>
-          ),
-        },
-        {
-          path: '/add-post',
-          element: (
-            <AuthLayout authentication>
-              <AddPost />
-            </AuthLayout>
-          ),
-        },
-        {
-          path: '/edit-post/:slug',
-          element: (
-            <AuthLayout authentication>
-              <EditPost />
-            </AuthLayout>
-          ),
-        },
-
-        // Public route for viewing a single post
-        { path: '/post/:slug', element: <Post /> },
+        { path: 'all-posts', element: <AuthLayout authentication><AllPosts /></AuthLayout> },
+        { path: 'add-post', element: <AuthLayout authentication><AddPost /></AuthLayout> },
+        { path: 'edit-post/:slug', element: <AuthLayout authentication><EditPost /></AuthLayout> },
+        { path: 'post/:slug', element: <Post /> },
       ],
     },
   ],
   {
-    basename: '/Blog', // This is the only new line — required for GitHub Pages
+    basename: '/Blog', // 🟩 important
   }
 );
 
-// Application entry point — Redux + Router integrated
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
