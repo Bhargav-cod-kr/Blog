@@ -34,7 +34,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: '/Blog', // 🟩 important
+    basename: '/React-Blog', // 🟩 important
   }
 );
 
